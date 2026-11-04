@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل البيانات - موقع مصعب</title>
+    <style>
+        body {
+            min-height: 100vh;
+            margin: 0;
+            display: grid;
+            place-items: center;
+            padding: 24px;
+            color: #f9fafb;
+            background: url('for.jpg.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Tahoma, Arial, sans-serif;
+        }
+
+        .form-container {
+            width: min(100%, 400px);
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            border-radius: 28px;
+            background: rgba(0, 0, 0, 0.75);
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #a6da1a;
+            font-size: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: #e2e8f0;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 1rem;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: #a6da1a;
+        }
+
+        select option {
+            background: #111827;
+            color: #fff;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            background: #a6da1a;
+            color: #000;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #8fb914;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>تسجيل بيانات مستخدم الالةالحاسبة</h2>
+        <form id="userForm">
+            <div class="input-group">
+                <label for="fullName">الاسم الكامل:</label>
+                <input type="text" id="fullName" required placeholder="أدخل اسمك الكامل">
+            </div>
+
+            <div class="input-group">
+                <label for="username">اسم المستخدم:</label>
+                <input type="text" id="username" required placeholder="أدخل اسم المستخدم">
+            </div>
+
+            <div class="input-group">
+                <label for="age">العمر:</label>
+                <input type="number" id="age" required placeholder="أدخل عمرك">
+            </div>
+
+            <div class="input-group">
+                <label for="role">الصفة:</label>
+                <select id="role" required>
+                    <option value="" disabled selected>اختر صففتك</option>
+                    <option value="طالب">طالب</option>
+                    <option value="أستاذ">أستاذ</option>
+                    <option value="مستخدم">مستخدم</option>
+                    <option value="مستخدم آخر">مستخدم آخر</option>
+                </select>
+            </div>
+
+            <button type="submit">دخول إلى الموقع</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('userForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // منع إعادة تحميل الصفحة
+            
+            // جمع البيانات المدخلة
+            const userData = {
+                fullName: document.getElementById('fullName').value,
+                username: document.getElementById('username').value,
+                age: document.getElementById('age.value') || document.getElementById('age').value,
+                role: document.getElementById('role').value
+            };
+
+            // تخزين البيانات مؤقتاً لنتمكن من عرضها في الواجهة الثانية إذا أردت
+            localStorage.setItem('mousaabUser', JSON.stringify(userData));
+
+            // الانتقال إلى الواجهة الثانية (قم بتسمية ملف الآلة الحاسبة calculator.html مثلاً)
+            window.location.href = 'calculator.html';
+        });
+    </script>
+
+</body><script>
+    document.getElementById('userForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // منع إعادة تحميل الصفحة الافتراضي
+        
+        // 1. جمع البيانات المدخلة من الحقول
+        const userData = {
+            fullName: document.getElementById('fullName').value,
+            username: document.getElementById('username').value,
+            age: document.getElementById('age').value,
+            role: document.getElementById('role').value
+        };
+
+        // 2. حفظ البيانات في الـ LocalStorage للاستفادة منها لاحقاً
+        localStorage.setItem('mousaabUser', JSON.stringify(userData));
+
+        // 3. التوجيه التلقائي إلى صفحة الآلة الحاسبة
+        window.location.href = 'calculator.html';
+    });
+</script></html>
