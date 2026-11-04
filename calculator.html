@@ -10,29 +10,38 @@
       box-sizing: border-box;
     }
 
-   body {
-    min-height: 100vh;
-    margin: 0;
-    display: grid;
-    place-items: center;
-    padding: 24px;
-    color: #e04721;
-    font-family: Tahoma, Arial, sans-serif;
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      color: #e04721;
+      font-family: Tahoma, Arial, sans-serif;
 
-    background-image: url('bg.jpg.jpeg');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-attachment: fixed;
-    background-size: cover;
-}
+      background-image: url('bg.jpg.jpeg');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-attachment: fixed;
+      background-size: cover;
+    }
 
+    /* التحويل التلقائي للهواتف والشاشات الصغيرة */
+    @media (max-width: 768px) {
+      body {
+        background-image: url('calc.jpg.jpeg');
+        background-position: top center;
+      }
+    }
+
+    /* تصحيح إضافة النقطة لكلاس calculator وضبط العرض */
     .calculator {
-      width: min(250%, 450px);
-      padding: 50px;
-      border: 1px solid rgba(0, 0, 0, 0.822);
-      border-radius: 50px;
-      background: rgba(0, 0, 0, 0.92);
-      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.4);
+      width: min(100%, 400px);
+      padding: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 30px;
+      background: rgba(0, 0, 0, 0.90);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
     }
 
     h1 {
@@ -40,6 +49,7 @@
       color: #cbd5e1;
       font-size: 1.1rem;
       font-weight: 500;
+      text-align: center;
     }
 
     .display {
@@ -49,12 +59,12 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      align-items: flex-start;
+      align-items: flex-end;
       overflow: hidden;
       border-radius: 16px;
       background: #0b1220;
       direction: ltr;
-      text-align: left;
+      text-align: right;
     }
 
     .previous-operand {
@@ -135,9 +145,9 @@
   </style>
 </head>
 <body>
-<h1 style="margin-bottom: -1670px; font-size: 1.6rem; font-weight: 600; color: #f7e600; text-align: center; transform: translateX(600px);">Calculator Designed by Mousaab</h1>
+
   <main class="calculator" aria-label="Calculator Designed by Mousaab">
-    <h1>Calculator  Designed  by  abdo snosi</h1>
+    <h1>Calculator Designed by Mousaab</h1>
     <section class="display" aria-live="polite" aria-atomic="true" aria-label="الشاشة">
       <div class="previous-operand" id="previous-operand"></div>
       <div class="current-operand" id="current-operand">0</div>
