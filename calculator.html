@@ -10,20 +10,21 @@
       box-sizing: border-box;
     }
 
-   body {
-    min-height: 100vh;
-    margin: 0;
-    display: grid;
-    place-items: center;
-    padding: 24px;
-    color: #e04721;
-    font-family: Tahoma, Arial, sans-serif;
-
-    background-image: url('bg.jpg.jpeg');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-attachment: fixed;
+ /* التنسيق الافتراضي للشاشات الكبيرة والحواسيب */
+body {
+    background-image: url('bg.jpg.jpeg'); /* اسم صورة الحاسوب */
     background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+}
+
+/* التحويل التلقائي للهواتف والشاشات الصغيرة (أقل من 768px) */
+@media (max-width: 768px) {
+    body {
+        background-image: url('calc.jpg.jpeg'); /* اسم صورة الهاتف الجديدة */
+        background-position: top center; /* محاذاة الصورة للأعلى لضمان إظهار التوقيع */
+    }
 }
 
     .calculator {
