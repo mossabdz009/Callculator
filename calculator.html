@@ -10,21 +10,21 @@
       box-sizing: border-box;
     }
 
- /* التنسيق الافتراضي للشاشات الكبيرة والحواسيب */
-body {
-    background-image: url('bg.jpg.jpeg'); /* اسم صورة الحاسوب */
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-attachment: fixed;
-}
+   body {
+    min-height: 100vh;
+    margin: 0;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    color: #e04721;
+    font-family: Tahoma, Arial, sans-serif;
 
-/* التحويل التلقائي للهواتف والشاشات الصغيرة (أقل من 768px) */
-@media (max-width: 768px) {
-    body {
-        background-image: url('calc.jpg.jpeg'); /* اسم صورة الهاتف الجديدة */
-        background-position: top center; /* محاذاة الصورة للأعلى لضمان إظهار التوقيع */
-    }
+    background-image: url('bg.jpg.jpeg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
+}
 
     .calculator {
       width: min(250%, 450px);
@@ -137,7 +137,7 @@ body {
 <body>
 <h1 style="margin-bottom: -1670px; font-size: 1.6rem; font-weight: 600; color: #f7e600; text-align: center; transform: translateX(600px);">Calculator Designed by Mousaab</h1>
   <main class="calculator" aria-label="Calculator Designed by Mousaab">
-    <h1>Calculator  Designed  by  aabdou snosi </h1>
+    <h1>Calculator  Designed  by  abdo snosi</h1>
     <section class="display" aria-live="polite" aria-atomic="true" aria-label="الشاشة">
       <div class="previous-operand" id="previous-operand"></div>
       <div class="current-operand" id="current-operand">0</div>
