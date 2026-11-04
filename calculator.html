@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111827">
+  <title>Calculator Designed by Mousaab</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+   body {
+    min-height: 100vh;
+    margin: 0;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    color: #e04721;
+    font-family: Tahoma, Arial, sans-serif;
+
+    background-image: url('bg.jpg.jpeg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+    .calculator {
+      width: min(250%, 450px);
+      padding: 50px;
+      border: 1px solid rgba(0, 0, 0, 0.822);
+      border-radius: 50px;
+      background: rgba(0, 0, 0, 0.92);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.4);
+    }
+
+    h1 {
+      margin: 0 0 18px;
+      color: #cbd5e1;
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    .display {
+      min-height: 100px;
+      margin-bottom: 18px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: flex-start;
+      overflow: hidden;
+      border-radius: 16px;
+      background: #0b1220;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .previous-operand {
+      min-height: 24px;
+      color: #94a3b8;
+      font-size: 1rem;
+      overflow-wrap: anywhere;
+    }
+
+    .current-operand {
+      max-width: 100%;
+      color: #f8fafc;
+      font-size: clamp(2rem, 12vw, 2.8rem);
+      font-variant-numeric: tabular-nums;
+      overflow-wrap: anywhere;
+    }
+
+    .keys {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      direction: ltr;
+    }
+
+    button {
+      min-height: 58px;
+      border: 0;
+      border-radius: 14px;
+      color: #f8fafc;
+      background: #08c0e0;
+      font: inherit;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background 140ms ease, transform 140ms ease;
+    }
+
+    button:hover {
+      background: #35445e;
+    }
+
+    button:active {
+      transform: scale(0.96);
+    }
+
+    button:focus-visible {
+      outline: 3px solid #93c5fd;
+      outline-offset: 2px;
+    }
+
+    .utility {
+      color: #bfdbfe;
+      background: #334155;
+    }
+
+    .operator {
+      color: #bfdbfe;
+      background: #1e3a5f;
+    }
+
+    .equals {
+      color: #102033;
+      background: #60a5fa;
+    }
+
+    .equals:hover {
+      background: #93c5fd;
+    }
+
+    .zero {
+      grid-column: span 2;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      button {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+<h1 style="margin-bottom: -1670px; font-size: 1.6rem; font-weight: 600; color: #f7e600; text-align: center; transform: translateX(600px);">Calculator Designed by Mousaab</h1>
+  <main class="calculator" aria-label="Calculator Designed by Mousaab">
+    <h1>Calculator  Designed  by  abdo snosi</h1>
+    <section class="display" aria-live="polite" aria-atomic="true" aria-label="الشاشة">
+      <div class="previous-operand" id="previous-operand"></div>
+      <div class="current-operand" id="current-operand">0</div>
+    </section>
+    <div class="keys">
+      <button class="utility" data-action="clear" aria-label="مسح الكل">AC</button>
+      <button class="utility" data-action="delete" aria-label="حذف الرقم الأخير">DEL</button>
+      <button class="utility" data-action="percent" aria-label="نسبة مئوية">%</button>
+      <button class="operator" data-operation="÷" aria-label="قسمة">÷</button>
+
+      <button data-digit="7">7</button>
+      <button data-digit="8">8</button>
+      <button data-digit="9">9</button>
+      <button class="operator" data-operation="×" aria-label="ضرب">×</button>
+
+      <button data-digit="4">4</button>
+      <button data-digit="5">5</button>
+      <button data-digit="6">6</button>
+      <button class="operator" data-operation="−" aria-label="طرح">−</button>
+
+      <button data-digit="1">1</button>
+      <button data-digit="2">2</button>
+      <button data-digit="3">3</button>
+      <button class="operator" data-operation="+" aria-label="جمع">+</button>
+
+      <button class="zero" data-digit="0">0</button>
+      <button data-action="decimal" aria-label="فاصلة عشرية">.</button>
+      <button class="equals" data-action="equals" aria-label="يساوي">=</button>
+    </div>
+  </main>
+
+  <script>
+    const currentOperand = document.querySelector("#current-operand");
+    const previousOperand = document.querySelector("#previous-operand");
+    let current = "0";
+    let previous = "";
+    let operation = null;
+    let shouldReset = false;
+
+    function render() {
+      currentOperand.textContent = current;
+      previousOperand.textContent = operation ? `${previous} ${operation}` : "";
+    }
+
+    function inputDigit(digit) {
+      if (current === "خطأ" || shouldReset) {
+        current = digit;
+        shouldReset = false;
+      } else {
+        current = current === "0" ? digit : current + digit;
+      }
+      render();
+    }
+
+    function chooseOperation(nextOperation) {
+      if (current === "خطأ") clear();
+      if (operation && !shouldReset) calculate();
+      previous = current;
+      operation = nextOperation;
+      shouldReset = true;
+      render();
+    }
+
+    function calculate() {
+      if (!operation || current === "خطأ") return;
+      const left = Number(previous);
+      const right = Number(current);
+      let result;
+
+      switch (operation) {
+        case "+": result = left + right; break;
+        case "−": result = left - right; break;
+        case "×": result = left * right; break;
+        case "÷": result = right === 0 ? NaN : left / right; break;
+        default: return;
+      }
+
+      current = Number.isFinite(result)
+        ? String(Number(result.toPrecision(12)))
+        : "خطأ";
+      previous = "";
+      operation = null;
+      shouldReset = true;
+      render();
+    }
+
+    function clear() {
+      current = "0";
+      previous = "";
+      operation = null;
+      shouldReset = false;
+      render();
+    }
+
+    function deleteDigit() {
+      if (current === "خطأ" || shouldReset) {
+        current = "0";
+        shouldReset = false;
+      } else {
+        current = current.length > 1 ? current.slice(0, -1) : "0";
+      }
+      render();
+    }
+
+    function inputDecimal() {
+      if (current === "خطأ" || shouldReset) {
+        current = "0.";
+        shouldReset = false;
+      } else if (!current.includes(".")) {
+        current += ".";
+      }
+      render();
+    }
+
+    function inputPercent() {
+      if (current === "خطأ") return;
+      current = String(Number(current) / 100);
+      render();
+    }
+
+    document.querySelector(".keys").addEventListener("click", (event) => {
+      const button = event.target.closest("button");
+      if (!button) return;
+
+      if (button.dataset.digit !== undefined) inputDigit(button.dataset.digit);
+      else if (button.dataset.operation) chooseOperation(button.dataset.operation);
+      else {
+        const actions = {
+          clear,
+          delete: deleteDigit,
+          decimal: inputDecimal,
+          percent: inputPercent,
+          equals: calculate
+        };
+        actions[button.dataset.action]?.();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (/^[0-9]$/.test(event.key)) inputDigit(event.key);
+      else if (event.key === ".") inputDecimal();
+      else if (event.key === "+") chooseOperation("+");
+      else if (event.key === "-") chooseOperation("−");
+      else if (event.key === "*") chooseOperation("×");
+      else if (event.key === "/") {
+        event.preventDefault();
+        chooseOperation("÷");
+      } else if (event.key === "Enter" || event.key === "=") calculate();
+      else if (event.key === "Backspace") deleteDigit();
+      else if (event.key === "Escape") clear();
+      else if (event.key === "%") inputPercent();
+    });
+  </script>
+</body>
+</html>
