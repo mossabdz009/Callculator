@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تسجيل البيانات - موقع مصعب</title>
     <style>
-    body {
+  /* الخلفية الخاصة بأجهزة الكمبيوتر والشاشات العريضة */
+body {
     min-height: 100vh;
     margin: 0;
     display: grid;
@@ -13,13 +14,25 @@
     padding: 24px;
     color: #e04721;
     font-family: Tahoma, Arial, sans-serif;
-    background-image: url('for.jpg.jpeg');
+    background-image: url('bg.jpg.jpeg'); /* صورة الكمبيوتر */
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;
-    background-size: contain; 
-    background-color: #111; 
-}  
+    background-size: cover;
+    background-color: #111;
+}
+
+/* الكود التلقائي للهواتف المحمولة والشاشات الصغيرة */
+@media (max-width: 768px) {
+    body {
+        /* سيقوم المتصفح هنا بتبديل الصورة تلقائياً لصورة الهاتف العمودية */
+        background-image: url('mobile.jpg.jpeg'); 
+        background-size: cover;
+        background-position: center;
+    }
+}
+
+        
 
         .form-container {
             width: min(100%, 400px);
