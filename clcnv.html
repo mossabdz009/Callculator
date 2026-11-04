@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111827">
+  <title>Calculator Designed by Mousaab</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      font-family: Tahoma, Arial, sans-serif;
+      
+      /* خلفية الحاسوب الافتراضية */
+      background-image: url('bg.jpg.jpeg');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-attachment: fixed;
+      background-size: cover;
+    }
+
+    /* الخلفية التلقائية للهاتف */
+    @media (max-width: 768px) {
+      body {
+        background-image: url('calc.jpg.jpeg');
+        background-position: top center;
+      }
+    }
+
+    /* حاوية الآلة الحاسبة متمركزة في المنتصف تماماً */
+    .calculator {
+      width: min(100%, 380px);
+      padding: 25px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      background: rgba(11, 18, 32, 0.92);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
+    }
+
+    h1 {
+      margin-bottom: 15px;
+      color: #cbd5e1;
+      font-size: 1.1rem;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .display {
+      min-height: 90px;
+      margin-bottom: 15px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: flex-end;
+      overflow: hidden;
+      border-radius: 14px;
+      background: #070b14;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      direction: ltr;
+      text-align: right;
+    }
+
+    .previous-operand {
+      min-height: 24px;
+      color: #94a3b8;
+      font-size: 0.95rem;
+      overflow-wrap: anywhere;
+    }
+
+    .current-operand {
+      max-width: 100%;
+      color: #f8fafc;
+      font-size: clamp(2rem, 8vw, 2.5rem);
+      font-variant-numeric: tabular-nums;
+      overflow-wrap: anywhere;
+    }
+
+    .keys {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      direction: ltr;
+    }
+
+    button {
+      min-height: 52px;
+      border: 0;
+      border-radius: 12px;
+      color: #f8fafc;
+      background: #1e293b;
+      font: inherit;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background 140ms ease, transform 140ms ease;
+    }
+
+    button:hover {
+      background: #334155;
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+    .utility {
+      color: #bfdbfe;
+      background: #334155;
+    }
+
+    .operator {
+      color: #bfdbfe;
+      background: #1e3a5f;
+    }
+
+    .equals {
+      color: #090d16;
+      background: #60a5fa;
+      font-weight: bold;
+    }
+
+    .zero {
+      grid-column: span 2;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="calculator" aria-label="Calculator Designed by Mousaab">
+    <h1>Calculator Designed by Mousaab and snosi</h1>
+    
+    <section class="display" aria-live="polite" aria-atomic="true" aria-label="الشاشة">
+      <div class="previous-operand" id="previous-operand"></div>
+      <div class="current-operand" id="current-operand">0</div>
+    </section>
+
+    <div class="keys">
+      <button class="utility" data-action="clear">AC</button>
+      <button class="utility" data-action="delete">DEL</button>
+      <button class="utility" data-action="percent">%</button>
+      <button class="operator" data-operation="÷">÷</button>
+
+      <button data-digit="7">7</button>
+      <button data-digit="8">8</button>
+      <button data-digit="9">9</button>
+      <button class="operator" data-operation="×">×</button>
+
+      <button data-digit="4">4</button>
+      <button data-digit="5">5</button>
+      <button data-digit="6">6</button>
+      <button class="operator" data-operation="−">−</button>
+
+      <button data-digit="1">1</button>
+      <button data-digit="2">2</button>
+      <button data-digit="3">3</button>
+      <button class="operator" data-operation="+">+</button>
+
+      <button class="zero" data-digit="0">0</button>
+      <button data-action="decimal">.</button>
+      <button class="equals" data-action="equals">=</button>
+    </div>
+  </main>
+
+  <script>
+    const currentOperand = document.querySelector("#current-operand");
+    const previousOperand = document.querySelector("#previous-operand");
+    let current = "0";
+    let previous = "";
+    let operation = null;
+    let shouldReset = false;
+
+    function render() {
+      currentOperand.textContent = current;
+      previousOperand.textContent = operation ? `${previous} ${operation}` : "";
+    }
+
+    function inputDigit(digit) {
+      if (current === "خطأ" || shouldReset) {
+        current = digit;
+        shouldReset = false;
+      } else {
+        current = current === "0" ? digit : current + digit;
+      }
+      render();
+    }
+
+    function chooseOperation(nextOperation) {
+      if (current === "خطأ") clear();
+      if (operation && !shouldReset) calculate();
+      previous = current;
+      operation = nextOperation;
+      shouldReset = true;
+      render();
+    }
+
+    function calculate() {
+      if (!operation || current === "خطأ") return;
+      const left = Number(previous);
+      const right = Number(current);
+      let result;
+
+      switch (operation) {
+        case "+": result = left + right; break;
+        case "−": result = left - right; break;
+        case "×": result = left * right; break;
+        case "÷": result = right === 0 ? NaN : left / right; break;
+        default: return;
+      }
+
+      current = Number.isFinite(result)
+        ? String(Number(result.toPrecision(12)))
+        : "خطأ";
+      previous = "";
+      operation = null;
+      shouldReset = true;
+      render();
+    }
+
+    function clear() {
+      current = "0";
+      previous = "";
+      operation = null;
+      shouldReset = false;
+      render();
+    }
+
+    function deleteDigit() {
+      if (current === "خطأ" || shouldReset) {
+        current = "0";
+        shouldReset = false;
+      } else {
+        current = current.length > 1 ? current.slice(0, -1) : "0";
+      }
+      render();
+    }
+
+    function inputDecimal() {
+      if (current === "خطأ" || shouldReset) {
+        current = "0.";
+        shouldReset = false;
+      } else if (!current.includes(".")) {
+        current += ".";
+      }
+      render();
+    }
+
+    function inputPercent() {
+      if (current === "خطأ") return;
+      current = String(Number(current) / 100);
+      render();
+    }
+
+    document.querySelector(".keys").addEventListener("click", (event) => {
+      const button = event.target.closest("button");
+      if (!button) return;
+
+      if (button.dataset.digit !== undefined) inputDigit(button.dataset.digit);
+      else if (button.dataset.operation) chooseOperation(button.dataset.operation);
+      else {
+        const actions = {
+          clear,
+          delete: deleteDigit,
+          decimal: inputDecimal,
+          percent: inputPercent,
+          equals: calculate
+        };
+        actions[button.dataset.action]?.();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (/^[0-9]$/.test(event.key)) inputDigit(event.key);
+      else if (event.key === ".") inputDecimal();
+      else if (event.key === "+") chooseOperation("+");
+      else if (event.key === "-") chooseOperation("−");
+      else if (event.key === "*") chooseOperation("×");
+      else if (event.key === "/") {
+        event.preventDefault();
+        chooseOperation("÷");
+      } else if (event.key === "Enter" || event.key === "=") calculate();
+      else if (event.key === "Backspace") deleteDigit();
+      else if (event.key === "Escape") clear();
+      else if (event.key === "%") inputPercent();
+    });
+  </script>
+</body>
+</html>
