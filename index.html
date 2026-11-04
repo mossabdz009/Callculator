@@ -5,17 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تسجيل البيانات - موقع مصعب</title>
     <style>
-        body {
-            min-height: 100vh;
-            margin: 0;
-            display: grid;
-            place-items: center;
-            padding: 24px;
-            color: #f9fafb;
-            background: url('for.jpg.jpeg') no-repeat center center fixed;
-            background-size: cover;
-            font-family: Tahoma, Arial, sans-serif;
-        }
+    body {
+    min-height: 100vh;
+    margin: 0;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    color: #e04721;
+    font-family: Tahoma, Arial, sans-serif;
+    background-image: url('bg.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    /* التعديل هنا: استخدام contain بدلاً من cover لتظهر الصورة كاملة */
+    background-size: contain; 
+    /* وضع لون خلفية احتياطي يملأ الفراغات إن وجدت */
+    background-color: #111; 
+}  
 
         .form-container {
             width: min(100%, 400px);
