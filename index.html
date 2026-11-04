@@ -22,13 +22,12 @@ body {
     background-color: #111;
 }
 
-/* الكود التلقائي للهواتف المحمولة والشاشات الصغيرة */
 @media (max-width: 768px) {
     body {
-        /* سيقوم المتصفح هنا بتبديل الصورة تلقائياً لصورة الهاتف العمودية */
-        background-image: url('mobile.jpg.jpeg'); 
+        background-image: url('mobile.jpg.jpeg');
         background-size: cover;
-        background-position: center;
+        /* رفع الصورة نحو الأعلى عبر تحريك محور Y إلى قيمة سالبة أو أقل من 50% */
+        background-position: center 20%; /* يمكنك تقليل الرقم مثل 20% أو 10% لرفع الصورة أكثر للأعلى */
     }
 }
 
